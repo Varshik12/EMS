@@ -8,11 +8,9 @@
 
 // ----------------------------------------------------------------------------------
 // 🌐 LIVE BACKEND URL CONFIGURATION:
-// Jab backend live ho jaye, toh apna Live URL niche quotes ke andar paste kar dena.
-// Example: const LIVE_BACKEND_URL = "https://your-ems-backend.onrender.com";
-// Agar ye khali ("") rahega, toh code apne aap "http://localhost:5000" par chalega.
+// Live Render Backend URL integrated below.
 // ----------------------------------------------------------------------------------
-const LIVE_BACKEND_URL = "";
+const LIVE_BACKEND_URL = "https://ems-k1kf.onrender.com";
 
 // Helper function to send JSON requests to the backend and parse the response.
 const fetchJSON = async (url, options = {}) => {
@@ -21,18 +19,22 @@ const fetchJSON = async (url, options = {}) => {
 
   // Set default headers for standard JSON data exchange and Auth authorization
   const headers = {
-    'Content-Type': 'application/json',                     // Set content type as JSON.
+    'Content-Type': 'application/json',                    // Set content type as JSON.
     ...(token ? { 'Authorization': `Bearer ${token}` } : {}), // Pass bearer token for protected routes
-    ...(options.headers || {})                              // Merges any additional custom headers.
+    ...(options.headers || {})                             // Merges any additional custom headers.
   };
 
   // Base URL Resolution: Live Variable -> Vite Env -> Localhost Fallback
   const configuredEnvUrl = import.meta.env.VITE_API_URL || '';
   const liveUrl = LIVE_BACKEND_URL.trim();
 
-  const apiBase = liveUrl !== "" 
+  let apiBase = liveUrl !== "" 
     ? liveUrl 
     : (configuredEnvUrl !== "" ? configuredEnvUrl : "http://localhost:5000");
+
+  // Prevent double slashes (e.g., https://domain.com//api/login)
+  apiBase = apiBase.replace(/\/+$
+/, '');
 
   const fullUrl = `${apiBase}${url}`;
 
