@@ -33,8 +33,7 @@ const fetchJSON = async (url, options = {}) => {
     : (configuredEnvUrl !== "" ? configuredEnvUrl : "http://localhost:5000");
 
   // Prevent double slashes (e.g., https://domain.com//api/login)
-  apiBase = apiBase.replace(/\/+$
-/, '');
+  apiBase = apiBase.replace(/\/+$/, '');
 
   const fullUrl = `${apiBase}${url}`;
 
